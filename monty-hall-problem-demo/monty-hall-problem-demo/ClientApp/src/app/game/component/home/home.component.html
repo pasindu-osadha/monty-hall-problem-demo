@@ -1,0 +1,35 @@
+<div class="container">
+
+  <div class="row justify-content-between ">
+
+    <div class="col-8">
+      <label *ngIf="clickAttempt===0">Pick one of Door</label>
+      <label *ngIf="clickAttempt===1">keep your choice or change it?</label>
+      <label *ngIf="clickAttempt===2">Tap closed door to play again</label>
+    </div>
+    <div class="col-4">
+      <label>Number of game attempts {{numberOfGameAttempts}}</label>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div *ngFor="let cardInfo of gameCardInfoList" class="card col">
+      <img *ngIf="!cardInfo.isOpen" class="clickable w-100 h-100" [src]="cardInfo.defualtImagePath "
+        [alt]="cardInfo.cardName" [class.selected]="cardInfo.isSelected" (click)="selectGameCard(cardInfo)" />
+
+      <img *ngIf="cardInfo.isOpen" class="w-100 h-100" [src]="cardInfo.imagePath " [alt]="cardInfo.cardName"
+        [class.selected]="cardInfo.isSelected" />
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <label *ngIf="isWon && isCompleteGame"> Your Win the game </label>
+      <label *ngIf="!isWon && isCompleteGame">Your lost the game</label>
+    </div>
+    <div class="col-2">Count of won {{countOfWon}}</div>
+    <div class="col-2">Count of Lost {{countOfLost}}</div>
+  </div>
+</div>

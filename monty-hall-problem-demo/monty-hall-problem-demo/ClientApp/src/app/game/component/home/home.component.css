@@ -1,0 +1,12 @@
+.card {
+    display: inline-block;
+    margin: 10px;
+  }
+  
+  .clickable {
+    cursor: pointer;
+  }
+  
+  .selected {
+    border: 2px solid blue;
+  }
