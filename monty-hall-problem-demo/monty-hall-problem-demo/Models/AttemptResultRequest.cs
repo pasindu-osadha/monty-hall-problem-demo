@@ -4,6 +4,5 @@
     {
         public bool IsChangeOption { get; set; }
         public int NumberOfAttempts { get; set; }
-        public int SimulateOption { get; set; }
     }
 }

@@ -15,11 +15,11 @@
 
   <div class="row">
 
-    <div *ngFor="let cardInfo of gameCardInfoList" class="card col">
-      <img *ngIf="!cardInfo.isOpen" class="clickable w-100 h-100" [src]="cardInfo.defualtImagePath "
+    <div *ngFor="let cardInfo of gameCardInfoList" class="card col p-0">
+      <img *ngIf="!cardInfo.isOpen" class="clickable w-100 h-100 p-0" [src]="cardInfo.defualtImagePath "
         [alt]="cardInfo.cardName" [class.selected]="cardInfo.isSelected" (click)="selectGameCard(cardInfo)" />
 
-      <img *ngIf="cardInfo.isOpen" class="w-100 h-100" [src]="cardInfo.imagePath " [alt]="cardInfo.cardName"
+      <img *ngIf="cardInfo.isOpen" class="w-100 h-100 p-0" [src]="cardInfo.imagePath " [alt]="cardInfo.cardName"
         [class.selected]="cardInfo.isSelected" />
     </div>
 

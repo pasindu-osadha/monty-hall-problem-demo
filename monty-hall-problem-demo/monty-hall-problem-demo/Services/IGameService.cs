@@ -5,6 +5,6 @@ namespace monty_hall_problem_demo.Services
     public interface IGameService
     {
         Task<List<GameCardInfo>> GetInitialCardsInfo();
-        Task<AttemptResultReseponse> GetAttemptsResult(AttemptResultRequest request);
+        Task<List<AttemptResultReseponse>> GetAttemptsResult(AttemptResultRequest request);
     }
 }

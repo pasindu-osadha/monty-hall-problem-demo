@@ -30,37 +30,49 @@ namespace monty_hall_problem_demo.Services
             }
         }
 
-        public async Task<AttemptResultReseponse> GetAttemptsResult(AttemptResultRequest request)
+        public async Task<List<AttemptResultReseponse>> GetAttemptsResult(AttemptResultRequest request)
         {
-            //simulation option 0 => final answer
-            //simulation option 1=> one by one 
-            AttemptResultReseponse attemptResultReseponse = new AttemptResultReseponse();
+            List<AttemptResultReseponse> attemptResultReseponseList = new List<AttemptResultReseponse>();
+
             int numberOfIteration = 0;
-            
-            if (request.SimulateOption == 0)
-                numberOfIteration = request.NumberOfAttempts;
-            else
-                numberOfIteration = 1;
+            int countOfWin = 0;
+            int countOfLost = 0;
+
+            numberOfIteration = request.NumberOfAttempts;
 
             for (int i = 0; i < numberOfIteration; i++)
             {
+                AttemptResultReseponse attemptResultReseponse = new AttemptResultReseponse();
                 attemptResultReseponse.GameCardInfoList = await GetInitialCardsInfo();
-                
+
                 await SelectRandomGameCard(attemptResultReseponse.GameCardInfoList);
 
                 if (await CheckWonTheGame(attemptResultReseponse.GameCardInfoList, request.IsChangeOption))
                 {
-                    attemptResultReseponse.CountOfWon = attemptResultReseponse.CountOfWon + 1;
+                    countOfWin++;
                 }
                 else
                 {
-                    attemptResultReseponse.CountOfLost = attemptResultReseponse.CountOfLost + 1;
+                    countOfLost++;
                 }
+                attemptResultReseponse.NumberOfGameAttempt = i + 1;
+                attemptResultReseponse.CountOfWon = countOfWin;
+                attemptResultReseponse.CountOfLost = countOfLost;
+                attemptResultReseponse.PrecentageofCountOfWon = Math.Round(((double)countOfWin / attemptResultReseponse.NumberOfGameAttempt) * 100, 2);
+                attemptResultReseponse.PrecentageofCountOfLost = Math.Round(((double)countOfLost / attemptResultReseponse.NumberOfGameAttempt) * 100, 2);
+
+                foreach (var attempt in attemptResultReseponse.GameCardInfoList)
+                {
+                    attempt.IsOpen = true;
+                }
+
+                attemptResultReseponseList.Add(attemptResultReseponse);
             }
 
-            attemptResultReseponse.NumberOfGameAttempt = numberOfIteration;
-            return attemptResultReseponse;
+
+            return attemptResultReseponseList;
         }
+
 
         private async Task SelectRandomGameCard(List<GameCardInfo> gameCards)
         {
@@ -79,20 +91,24 @@ namespace monty_hall_problem_demo.Services
         {
             bool isWon = false;
 
-            if(IsChangeOption)
+            if (IsChangeOption)
             {
-               var result =  gameCards.FindAll(g=> g.IsSelected==false && g.IsOpen == false && g.isCar == true);
-                if(result.Count == 0)
+                var result = gameCards.FindAll(g => g.IsSelected == false && g.IsOpen == false && g.isCar == true);
+                if (result.Count == 0)
                     isWon = false;
                 else
+                {
+                    var index = gameCards.FindIndex(g => g.Id == result[0].Id);
+                    gameCards[index].IsSelected = true;
                     isWon = true;
+                }
             }
             else
             {
-                var selectedCard = gameCards.FirstOrDefault(g=> g.IsSelected == true); 
+                var selectedCard = gameCards.FirstOrDefault(g => g.IsSelected == true);
                 if (selectedCard != null)
                 {
-                    if(selectedCard.isCar == true)
+                    if (selectedCard.isCar == true)
                         isWon = true;
                     else
                         isWon = false;

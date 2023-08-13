@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
   }
 
   selectGameCard(gameCardInfo: GameCardInfo) {
-    console.log(gameCardInfo);
     this.clickAttempt = this.clickAttempt + 1;
 
     switch (this.clickAttempt) {
