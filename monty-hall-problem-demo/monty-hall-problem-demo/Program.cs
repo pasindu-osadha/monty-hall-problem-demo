@@ -1,9 +1,12 @@
+using monty_hall_problem_demo.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddScoped<IGameService,GameService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
